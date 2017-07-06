@@ -375,6 +375,14 @@ static void export_kernel_boot_props() {
         std::string value = property_get(prop_map[i].src_prop);
         property_set(prop_map[i].dst_prop, (!value.empty()) ? value.c_str() : prop_map[i].default_value);
     }
+    std::string value = property_get("ro.boot.model");
+    if (value.compare("xu3l") == 0) {
+        property_set("ro.product.model", "ODROID-XU3-Lite");
+    } else if (value.compare("xu3") == 0) {
+        property_set("ro.product.model", "ODROID-XU3");
+    } else {
+        property_set("ro.product.model", "ODROID-XU4");
+    }
 }
 
 static void process_kernel_dt() {
