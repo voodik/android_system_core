@@ -383,6 +383,22 @@ static void export_kernel_boot_props() {
     } else {
         property_set("ro.product.model", "ODROID-XU4");
     }
+
+    std::string value1 = property_get("ro.boot.rotation");
+    if (value1.compare("90") == 0) {
+        property_set("ro.sf.hwrotation", "90");
+        property_set("persist.demo.hdmirotation", "portrait");
+    } else if (value1.compare("180") == 0) {
+        property_set("ro.sf.hwrotation", "180");
+        property_set("persist.demo.hdmirotation", "landscape");
+    } else if (value1.compare("270") == 0) {
+        property_set("ro.sf.hwrotation", "270");
+        property_set("persist.demo.hdmirotation", "portrait");
+    } else {
+        property_set("ro.sf.hwrotation", "0");
+        property_set("persist.demo.hdmirotation", "landscape");
+    }
+
 }
 
 static void process_kernel_dt() {
