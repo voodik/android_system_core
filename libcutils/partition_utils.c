@@ -20,6 +20,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <cutils/properties.h>
 
@@ -41,6 +43,8 @@ int partition_wiped(char *source)
 {
     char buf[4096];
     int fd, ret;
+    char fat[6]="FAT32";
+    char newbuf[6]={0};
 
     if ((fd = open(source, O_RDONLY)) < 0) {
         return 0;
@@ -51,6 +55,14 @@ int partition_wiped(char *source)
 
     if (ret != sizeof(buf)) {
         return 0;
+    }
+
+    if (strcmp(source, "/dev/block/mmcblk0p3") == 0 || strcmp(source, "/dev/block/mmcblk0p4") == 0){
+
+        memcpy(newbuf, buf + 0x52, 5);
+          if (strcmp(newbuf,fat) == 0){
+              return 1;
+          }
     }
 
     /* Check for all zeros */
